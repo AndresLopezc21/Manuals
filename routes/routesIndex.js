@@ -12,10 +12,11 @@ router.get('/getManualsCategories', indexController.getAllManualsCategories);
 // GET /Obtener una descripción completa de la tarea a consultar
 router.get('/getCategoryContentById/:id', indexController.getManualsByCategorieId);
 
-/*
-// POST /Registrar todos los datos de la tarea
-router.post('/createNewTask', indexController.createPost);
 
+//POST /Registrar todos los datos de la tarea
+router.post('/login', indexController.loginUser);
+
+/*
 // PUT /Permite editar una row seleccionada con su id
 router.put('/updateTask/:id', indexController.editRow);
 

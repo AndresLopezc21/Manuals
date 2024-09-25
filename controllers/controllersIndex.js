@@ -30,39 +30,37 @@ exports.getManualsByCategorieId = async (req, res, next) => {
       res.status(404).json(e);
     });
 }
-/*
-// POST / Da de alta la tarea en la tabla dentro de la db 
+//POST 
+exports.loginUser = async (req, res, next) => {
+  const { username, password } = req.body;
 
-exports.createPost = async (req, res, next) => {
-  const newTarea = req.body;
-  if (!newTarea.title || !newTarea.description || !newTarea.status || !newTarea.date) {
-    res.status(400).send('Asegurate de ingresar los datos obligatorios (titulo, descripción, estatus y fecha)');
+  if (!username || !password) {
+      return res.status(400).json({ message: 'El username y password son necesarios para iniciar sesión' });
   }
-  else {
-    const title = newTarea.title;
-    const description = newTarea.description;
-    const status = newTarea.status;
-    const date = newTarea.date;
-    const comments = newTarea.comments;
-    const responsibleOf = newTarea.responsibleOf;
-    const tags = newTarea.tags;
 
-    post: { title, description, status, date, comments, responsibleOf, tags }
+  try {
+      const [rows] = await db.execute(
+          `SELECT * FROM users WHERE username = ? AND password = ?`,
+          [username, password]
+      );
 
-    await db.execute(`INSERT INTO tareas (titulo, descripcion, status, fecha, comentarios, responsable, tags)
-                             VALUES ('${title}', '${description}', '${status}',
-                                     '${date}', '${comments}', '${responsibleOf}', '${tags}');`)
-      .then((res2) => {
-        res.status(200).json({
-          message: 'La tarea se ha registrado correctamente',
-        });
-      })
-      .catch((e) => {
-        res.status(404).json(e);
-      });
+      if (rows.length === 0) {
+          return res.status(401).json({ message: 'Username o password invalido' });
+      }
+      
+      const user = {
+          id: rows[0].id,
+          username: rows[0].username,
+          role: rows[0].role_id === 1 ? 'admin' : 'user' // Asignar el rol
+      };
+
+      return res.status(200).json({ message: 'Logeado correctamente', user });
+  } catch (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'Error al loggear' });
   }
 }
-
+/*
 // PUT / Permite editar a la tarea a seleccionar dando el id, solo no permite editar el responsable de la tarea
 
 exports.editRow = async (req, res, next) => {
