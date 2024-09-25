@@ -30,7 +30,9 @@ exports.getManualsByCategorieId = async (req, res, next) => {
       res.status(404).json(e);
     });
 }
-//POST 
+/* POST Login de usuarios y muestra de rol en base a rol_id introducido en base de datos
+   Por id = 1 == Admin, id = 2 == User 
+*/
 exports.loginUser = async (req, res, next) => {
   const { username, password } = req.body;
 
@@ -57,7 +59,7 @@ exports.loginUser = async (req, res, next) => {
       return res.status(200).json({ message: 'Logeado correctamente', user });
   } catch (err) {
       console.log(err);
-      return res.status(500).json({ message: 'Error al loggear' });
+      return res.status(500).json({ message: 'Error al logear' });
   }
 }
 /*
