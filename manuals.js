@@ -10,4 +10,4 @@ app.use(bodyParser.json()); //application/json
 
 app.use('/index', indexRoutes);
 
-app.listen(8080);
+app.listen(3000);

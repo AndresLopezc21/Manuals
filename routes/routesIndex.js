@@ -3,23 +3,14 @@ const express = require('express');
 
 
 const indexController = require('../controllers/controllersIndex');
+const authenticateUser = require('../middlewares/authenticateUser');
 
 const router = express.Router();
 
-// GET /Obtener todas las categorias de los Manuales
-router.get('/getManualsCategories', indexController.getAllManualsCategories);
-
-// GET /Obtener una descripción completa de la tarea a consultar
-router.get('/getCategoryContentById/:id', indexController.getManualsByCategorieId);
-
-
-//POST /Registrar todos los datos de la tarea
 router.post('/login', indexController.loginUser);
 
-/*
-// PUT /Permite editar una row seleccionada con su id
-router.put('/updateTask/:id', indexController.editRow);
+router.get('/manuals-by-categorie',authenticateUser, indexController.showManualsByCategoryForUser);
 
-// DELETE /Permite borrar una row seleccionada con su id
-router.delete('/deleteTask/:id', indexController.deleteRow);*/
+router.get('/manuals-categories', indexController.getAllManualsCategories);
+
 module.exports = router;
