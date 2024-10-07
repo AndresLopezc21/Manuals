@@ -1,20 +1,30 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:3000'; // Cambia a la URL de tu backend
-
+// src/api/api.js
 export const loginUser = async (username, password) => {
-  return axios.post(`${API_URL}/login`, { username, password });
+  const response = await fetch('/index/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+  });
+  if (!response.ok) {
+    throw new Error('Error al iniciar sesión');
+  }
+  return response.json();
 };
 
-export const getManualsByCategory = async (manual_categorie_id, token) => {
-  return axios.get(`${API_URL}/manuals-by-categorie`, {
-    params: { manual_categorie_id },
-    headers: { Authorization: `Bearer ${token}` }
-  });
+export const getManualsCategories = async () => {
+  const response = await fetch('/index/manuals-categories');
+  if (!response.ok) {
+    throw new Error('Error al obtener las categorías');
+  }
+  return response.json();
 };
 
-export const getAllCategories = async (token) => {
-  return axios.get(`${API_URL}/manuals-categories`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
+export const getManualsByCategory = async (categoryId, page = 1, limit = 5) => {
+  const response = await fetch(`/index/manuals-by-categorie?manual_categorie_id=${categoryId}&page=${page}&limit=${limit}`);
+  if (!response.ok) {
+    throw new Error('Error al obtener los manuales');
+  }
+  return response.json();
 };
